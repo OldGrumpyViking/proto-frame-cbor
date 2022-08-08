@@ -22,7 +22,6 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
-  "bitstring ~= 3.1.9",
 ]
 
 [project.optional-dependencies]
@@ -37,6 +36,7 @@ dev = [
   "black ~= 22.3.0",
   "bandit[toml] ~= 1.7.4",
   "pyupgrade ~= 2.37.3",
+  "pydocstringformatter ~= 0.6.2"
 ]
 
 [project.urls]
@@ -83,6 +83,7 @@ warn_unused_configs = true
 warn_unused_ignores = true
 exclude = []
 check_untyped_defs = true
+follow_imports = "normal"  # silent
 # allow_untyped_globals = true  # Might want to enable this on legacy code
 
 [tool.isort]
@@ -101,6 +102,9 @@ line-length = 120
 [tool.bandit.assert_used]
 skips = ["*_test.py", "*test_*.py"]
 
+[tool.pydocstringformatter]
+max-line-length = 120
+
 [tool.hatch.envs.default]
 python = "3.8"
 features = [
@@ -112,11 +116,13 @@ test = "pytest"
 typing = "mypy . --install-types --non-interactive"
 fmt = [
   "isort .",
+  "pydocstringformatter -w .",
   "black .",
   "pyupgrade `find . -name \"*.py\" -type f` --py38-plus"
 ]
 lint = [
   "isort . --diff --check",
+  "pydocstringformatter . --exit-code",
   "black . --diff --check --color",
   "typing",
   "bandit -r . -c pyproject.toml"
