@@ -35,6 +35,8 @@ dev = [
   "mypy ~= 0.971",
   "isort ~= 5.10.1",
   "black ~= 22.3.0",
+  "bandit[toml] ~= 1.7.4",
+  "pyupgrade ~= 2.37.3",
 ]
 
 [project.urls]
@@ -96,6 +98,9 @@ line_length = 120
 target-version = ["py38", "py39", "py310"]
 line-length = 120
 
+[tool.bandit.assert_used]
+skips = ["*_test.py", "*test_*.py"]
+
 [tool.hatch.envs.default]
 python = "3.8"
 features = [
@@ -108,11 +113,13 @@ typing = "mypy . --install-types --non-interactive"
 fmt = [
   "isort .",
   "black .",
+  "pyupgrade `find . -name \"*.py\" -type f` --py38-plus"
 ]
 lint = [
   "isort . --diff --check",
   "black . --diff --check --color",
   "typing",
+  "bandit -r . -c pyproject.toml"
 ]
 
 [tool.hatch.envs.lock]

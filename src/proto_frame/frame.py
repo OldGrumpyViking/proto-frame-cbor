@@ -1,5 +1,7 @@
 import abc
+
 import bitstring
+
 
 class BaseFrame(abc.ABC):
     @abc.abstractclassmethod
@@ -34,6 +36,7 @@ class BaseFrame(abc.ABC):
 
     def to_bits(self) -> str:
         return self._to_bitstring.bin
+
 
 def Frame(BaseFrame):
     pass
