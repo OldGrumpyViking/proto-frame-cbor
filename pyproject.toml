@@ -36,7 +36,8 @@ dev = [
   "black ~= 22.3.0",
   "bandit[toml] ~= 1.7.4",
   "pyupgrade ~= 2.37.3",
-  "pydocstringformatter ~= 0.6.2"
+  "pydocstringformatter ~= 0.6.2",
+  "pylint ~= 2.14.5",
 ]
 
 [project.urls]
@@ -105,6 +106,23 @@ skips = ["*_test.py", "*test_*.py"]
 [tool.pydocstringformatter]
 max-line-length = 120
 
+[tool.pylint.main]
+py-version = "3.8"
+jobs = 0
+# fail-on = ["W", "E", "F"]  # Less strict pylint
+# fail-under = 5  # 0-10 for strictness [default: 10]
+ignore = ["__version__.py", ]
+
+[tool.pylint."messages control"]
+disable = [
+  "raw-checker-failed", "bad-inline-option", "locally-disabled", "file-ignored", "suppressed-message",
+  "useless-suppression", "deprecated-pragma", "use-symbolic-message-instead", "missing-module-docstring",
+  "missing-function-docstring", "missing-class-docstring",
+]
+
+[tool.pylint.format]
+max-line-length = 120
+
 [tool.hatch.envs.default]
 python = "3.8"
 features = [
@@ -113,19 +131,19 @@ features = [
 
 [tool.hatch.envs.default.scripts]
 test = "pytest"
-typing = "mypy . --install-types --non-interactive"
 fmt = [
   "isort .",
   "pydocstringformatter -w .",
+  "pyupgrade `find . -name \"*.py\" -type f` --py38-plus",
   "black .",
-  "pyupgrade `find . -name \"*.py\" -type f` --py38-plus"
 ]
 lint = [
   "isort . --diff --check",
   "pydocstringformatter . --exit-code",
   "black . --diff --check --color",
-  "typing",
-  "bandit -r . -c pyproject.toml"
+  "mypy . --install-types --non-interactive",
+  "bandit -r . -c pyproject.toml",
+  "pylint src"
 ]
 
 [tool.hatch.envs.lock]

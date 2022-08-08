@@ -2,7 +2,8 @@ import abc
 
 
 class BaseFrame(abc.ABC):
-    @abc.abstractclassmethod
+    @classmethod
+    @abc.abstractmethod
     def from_bytes(cls, frame_bytes: bytes):
         pass
 
@@ -36,5 +37,13 @@ class BaseFrame(abc.ABC):
         return format(int.from_bytes(frame_bytes, byteorder="big"), f"0{len(frame_bytes)*8}b")
 
 
-def Frame(BaseFrame):
-    pass
+class Frame(BaseFrame):
+    def __init__(self, payload: bytes):
+        self.payload = payload
+
+    @classmethod
+    def from_bytes(cls, frame_bytes: bytes):
+        return cls(frame_bytes)
+
+    def to_bytes(self) -> bytes:
+        return self.payload
