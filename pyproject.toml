@@ -1,0 +1,129 @@
+[project]
+name = "proto-frame"
+description = 'Protocol Frame parser.'
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+keywords = [
+  "protocol",
+  "frame",
+]
+authors = [
+  { name = "OldGrumpyViking", email = "old.grumpy.viking@hotmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+dynamic = ["version"]
+dependencies = [
+  "bitstring ~= 3.1.9",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest ~= 7.1.2",
+  "pytest-cov ~= 3.0.0",
+  "pytest-sugar ~= 0.9.5",
+  "pytest-xdist[psutil] ~= 2.5.0",
+  "pytest-randomly ~= 3.12.0",
+  "mypy ~= 0.971",
+  "isort ~= 5.10.1",
+  "black ~= 22.3.0",
+]
+
+[project.urls]
+Issues = "https://github.com/OldGrumpyViking/proto-frame/issues"
+Source = "https://github.com/OldGrumpyViking/proto-frame"
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/proto_frame/__version__.py"
+
+[tool.pytest.ini_options]
+addopts = ["--cov",
+           "--no-cov-on-fail",
+           "-nauto",
+           ]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+source_pkgs = ["proto_frame", "tests"]
+omit = [
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+skip_empty = true
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.mypy]
+python_version = 3.8
+pretty = true
+warn_unused_configs = true
+warn_unused_ignores = true
+exclude = []
+check_untyped_defs = true
+# allow_untyped_globals = true  # Might want to enable this on legacy code
+
+[tool.isort]
+py_version = "38"
+profile = "black"
+multi_line_output = 5
+include_trailing_comma = true
+use_parentheses = true
+src_paths = ["src", "tests"]
+line_length = 120
+
+[tool.black]
+target-version = ["py38", "py39", "py310"]
+line-length = 120
+
+[tool.hatch.envs.default]
+python = "3.8"
+features = [
+  "dev",
+]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest"
+typing = "mypy . --install-types --non-interactive"
+fmt = [
+  "isort .",
+  "black .",
+]
+lint = [
+  "isort . --diff --check",
+  "black . --diff --check --color",
+  "typing",
+]
+
+[tool.hatch.envs.lock]
+features = [
+]
+
+[tool.hatch.envs.lock.scripts]
+lock = "pip freeze > requirements-lock.txt"
+
+#[tool.hatch.envs.mtest]
+#type = "container"  # Needs the "hatch-containers" plugin
+
+[[tool.hatch.envs.mtest.matrix]]
+python = ["38", "39", "310"]
