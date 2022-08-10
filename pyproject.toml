@@ -38,6 +38,15 @@ dev = [
   "pyupgrade ~= 2.37.3",
   "pydocstringformatter ~= 0.6.2",
   "pylint ~= 2.14.5",
+  "sphinx ~= 5.1.1",
+  "sphinxcontrib-plantuml ~= 0.24",
+  "sphinx-autodoc-typehints ~= 1.19.2",
+  "furo ~= 2022.6.21",
+  "myst-parser ~= 0.18.0",
+  "sphinx-inline-tabs ~= 2022.1.2b11",
+  "sphinx-autobuild ~= 2021.3.14",
+  "sphinx-copybutton ~= 0.5.0",
+  "sphinx_design ~= 0.2.0",
 ]
 
 [project.urls]
@@ -145,16 +154,23 @@ lint = [
   "bandit -r . -c pyproject.toml",
   "pylint src"
 ]
-
-[tool.hatch.envs.lock]
-features = [
-]
-
-[tool.hatch.envs.lock.scripts]
-lock = "pip freeze > requirements-lock.txt"
+doc = "sphinx-build docs docs/_build -j auto -W --keep-going"
+doc-live = "sphinx-autobuild -a docs docs/_build/html --watch ."
 
 #[tool.hatch.envs.mtest]
 #type = "container"  # Needs the "hatch-containers" plugin
 
 [[tool.hatch.envs.mtest.matrix]]
 python = ["38", "39", "310"]
+
+[tool.hatch.envs.locked]
+platforms = ["linux",]
+features = []  # dev can be added here to lock dev deps.
+pre-install-commands = [
+  "pip install -r pip.lock || true"
+]
+
+[tool.hatch.envs.locked.scripts]
+lock = "pip check && pip freeze --exclude-editable > pip.lock"
+check = "pip freeze --exclude-editable | diff pip.lock -"
+update = "pip uninstall -r pip.lock -y && pip install -e . && pip check && pip freeze --exclude-editable > pip.lock"

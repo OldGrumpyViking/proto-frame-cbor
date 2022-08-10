@@ -2,10 +2,16 @@ import abc
 
 
 class BaseFrame(abc.ABC):
+    """Base frame for the frame structure."""
+
     @classmethod
     @abc.abstractmethod
     def from_bytes(cls, frame_bytes: bytes):
-        pass
+        """Create the frame object from bytes.
+
+        Args:
+            frame_bytes: The frame to parse.
+        """
 
     @classmethod
     def from_hex(cls, frame_hex: str):
