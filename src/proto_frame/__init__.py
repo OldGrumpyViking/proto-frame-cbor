@@ -1,1 +1,1 @@
-from proto_frame.__version__ import __version__
+from proto_frame._version import __version__

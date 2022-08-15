@@ -20,8 +20,7 @@ release = importlib.metadata.version(project)
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-#    "sphinx.ext.extlinks",
-#    "sphinx.ext.intersphinx",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "myst_parser",
     "sphinx.ext.napoleon",
@@ -34,6 +33,10 @@ extensions = [
 ]
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
+intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
+
+typehints_use_rtype = False
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -71,5 +74,9 @@ myst_enable_extensions = [
     "replacements",
     "colon_fence",
     "deflist",
+    "linkify",
 ]
 myst_heading_anchors = 3
+
+copybutton_prompt_text = r">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: "
+copybutton_prompt_is_regexp = True

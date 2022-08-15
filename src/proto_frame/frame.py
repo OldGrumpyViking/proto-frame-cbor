@@ -12,6 +12,7 @@ class BaseFrame(abc.ABC):
         Args:
             frame_bytes: The frame to parse.
         """
+        return cls()
 
     @classmethod
     def from_hex(cls, frame_hex: str):

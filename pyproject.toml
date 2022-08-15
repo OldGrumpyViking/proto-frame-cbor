@@ -1,6 +1,6 @@
 [project]
 name = "proto-frame"
-description = 'Protocol Frame parser.'
+description = 'Protocol Frame parser framework.'
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.8"
@@ -25,12 +25,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = [
+test = [
   "pytest ~= 7.1.2",
   "pytest-cov ~= 3.0.0",
   "pytest-sugar ~= 0.9.5",
   "pytest-xdist[psutil] ~= 2.5.0",
   "pytest-randomly ~= 3.12.0",
+]
+lint = [
   "mypy ~= 0.971",
   "isort ~= 5.10.1",
   "black ~= 22.3.0",
@@ -38,15 +40,20 @@ dev = [
   "pyupgrade ~= 2.37.3",
   "pydocstringformatter ~= 0.6.2",
   "pylint ~= 2.14.5",
+]
+doc = [
   "sphinx ~= 5.1.1",
   "sphinxcontrib-plantuml ~= 0.24",
   "sphinx-autodoc-typehints ~= 1.19.2",
   "furo ~= 2022.6.21",
-  "myst-parser ~= 0.18.0",
+  "myst-parser[linkify] ~= 0.18.0",
   "sphinx-inline-tabs ~= 2022.1.2b11",
   "sphinx-autobuild ~= 2021.3.14",
   "sphinx-copybutton ~= 0.5.0",
   "sphinx_design ~= 0.2.0",
+]
+dev = [  # All development features
+  "proto-frame[test,lint,doc]",
 ]
 
 [project.urls]
@@ -61,7 +68,7 @@ build-backend = "hatchling.build"
 source = "vcs"
 
 [tool.hatch.build.hooks.vcs]
-version-file = "src/proto_frame/__version__.py"
+version-file = "src/proto_frame/_version.py"
 
 [tool.pytest.ini_options]
 addopts = ["--cov",
@@ -77,6 +84,7 @@ omit = [
 ]
 
 [tool.coverage.report]
+fail_under = 0
 show_missing = true
 skip_covered = true
 skip_empty = true
@@ -84,6 +92,7 @@ exclude_lines = [
   "no cov",
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
+  "raise NotImplementedError",
 ]
 
 [tool.mypy]
@@ -93,7 +102,7 @@ warn_unused_configs = true
 warn_unused_ignores = true
 exclude = []
 check_untyped_defs = true
-follow_imports = "normal"  # silent
+follow_imports = "normal"  # 'silent' for less strict mode (Individual modules can also be disabled)
 # allow_untyped_globals = true  # Might want to enable this on legacy code
 
 [tool.isort]
@@ -120,7 +129,7 @@ py-version = "3.8"
 jobs = 0
 # fail-on = ["W", "E", "F"]  # Less strict pylint
 # fail-under = 5  # 0-10 for strictness [default: 10]
-ignore = ["__version__.py", ]
+ignore = ["_version.py", ]
 
 [tool.pylint."messages control"]
 disable = [
@@ -134,6 +143,7 @@ max-line-length = 120
 
 [tool.hatch.envs.default]
 python = "3.8"
+platforms = ["linux",]
 features = [
   "dev",
 ]
@@ -143,7 +153,8 @@ test = "pytest"
 fmt = [
   "isort .",
   "pydocstringformatter -w .",
-  "pyupgrade `find . -name \"*.py\" -type f` --py38-plus",
+  "pyupgrade `find . -name \"*.py\" -type f` --py38-plus",  # Linux command
+  # "pyupgrade --py38-plus (gci -r -fi '*.py' | Select -ExpandProperty FullName)",  # Powershell command
   "black .",
 ]
 lint = [
@@ -157,20 +168,49 @@ lint = [
 doc = "sphinx-build docs docs/_build -j auto -W --keep-going"
 doc-live = "sphinx-autobuild -a docs docs/_build/html --watch ."
 
-#[tool.hatch.envs.mtest]
-#type = "container"  # Needs the "hatch-containers" plugin
+# [tool.hatch.envs.cont]  # Used to run commnads using containers as the venv backend.
+# type = "container"  # Needs the "hatch-containers" plugin
 
-[[tool.hatch.envs.mtest.matrix]]
+# [tool.hatch.envs.cnda]  # Used to run commnads using conda as the venv backend.
+# type = "conda"  # Needs the "hatch-conda" plugin
+
+# [tool.hatch.envs.codev]
+# pre-install-commands = [  # Changes to this line requires re-creation of the environment "hatch env remove codev".
+#   "pip install -e ../<dir-with-other-project>"  # Used for developing on two projects in editable mode simultaniously
+# ]
+
+[tool.hatch.envs.mrun]  # Used to run a command in multiple python environments
+# type = "container"  # Needs the "hatch-containers" plugin
+# type = "conda"  # Needs the "hatch-conda" plugin
+
+[[tool.hatch.envs.mrun.matrix]]
 python = ["38", "39", "310"]
 
-[tool.hatch.envs.locked]
+[tool.hatch.envs.locked]  # Used for working with locked environments
 platforms = ["linux",]
-features = []  # dev can be added here to lock dev deps.
+features = []
 pre-install-commands = [
-  "pip install -r pip.lock || true"
+  "pip install -r pip.lock || true"  # Linux specific cmd
 ]
 
 [tool.hatch.envs.locked.scripts]
-lock = "pip check && pip freeze --exclude-editable > pip.lock"
-check = "pip freeze --exclude-editable | diff pip.lock -"
-update = "pip uninstall -r pip.lock -y && pip install -e . && pip check && pip freeze --exclude-editable > pip.lock"
+lock = "pip check && pip freeze --exclude-editable > pip.lock"  # Linux specific cmd
+check = "pip freeze --exclude-editable | diff pip.lock -"  # Linux specific cmd
+update = "pip uninstall -r pip.lock -y && pip install -e . && pip check && pip freeze --exclude-editable > pip.lock"  # Linux specific cmd
+
+
+## Minimal CI specific environments
+[tool.hatch.envs.test]
+features = [
+  "test",
+]
+
+[tool.hatch.envs.lint]
+features = [
+  "lint",
+]
+
+[tool.hatch.envs.doc]
+features = [
+  "doc",
+]

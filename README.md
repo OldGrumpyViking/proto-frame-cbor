@@ -21,45 +21,55 @@
 [![License - MIT](https://img.shields.io/badge/license-MIT-9400d3.svg)](https://spdx.org/licenses/)
 
 -----
+
 <!-- start overview include -->
-A Protocol Frame parser.
+
+Protocol Frame parser framework.
 
 <!-- end overview include -->
+
+# Documentation
+
+The documentation can be found at: xxxx
+
 <!-- start quickstart include -->
-## Quickstart
+
+# Quickstart
 
 This package only uses tools backed by [PyPa](https://www.pypa.io/en/latest/) and [PyCQA](https://meta.pycqa.org/).
 
-### Installation
+## Installation
+The package can be installed with:
 
-```shell
-pip install proto-frame
+```console
+$ pip install proto-frame
 ```
 
-### Develop - Pip
+## Develop - Pip
 
 Pip can be used to install and develop on the package.
 
-```shell
-pip install -e .[dev]
+```console
+$ pip install -e .[dev]
 ```
 
 See available commands in `pyproject.toml` under the `[tool.hatch.envs.default.scripts]` section.
 
-### Develop - Hatch
+## Develop - Hatch
 
 It is recommended to use hatch for development as it helps with setting up venv's and running predefined commands.
 
-```shell
-pip install hatch
-hatch run test  # for testing
-hatch run mtest:test  # Run tests for all supported python versions
-hatcn run fmt  # Auto format code according to code style
-hatch run lint  # Lint code
-hatch run doc  # Build the documentation
-hatch run doc-live  # Live updated http server for doc writing.
-hatch run locked:lock  # Create a locked requirements file.
-hatch run locked:check  # Check if lock file is valid.
-hatch run locked:update  # Update locked deps.
+Here are some base usage examples:
+```console
+$ pip install hatch
+$ hatch run test  # for testing
+$ hatcn run fmt  # Auto format code according to code style
+$ hatch run lint  # Lint code
+$ hatch run doc  # Build the documentation
+$ hatch run doc-live  # Live updated http server for doc writing.
+$ hatch run locked:lock  # Create a locked requirements file.
+$ hatch run locked:check  # Check if lock file is valid.
+$ hatch run locked:update  # Update locked deps.
 ```
+
 <!-- end quickstart include -->

@@ -2,10 +2,7 @@
 
 The proto-frame API.
 
-## BaseFrame
+```{toctree}
 
-```{eval-rst}
-.. autoclass:: proto_frame.frame.BaseFrame
-   :members:
-   :undoc-members:
+frames
 ```
