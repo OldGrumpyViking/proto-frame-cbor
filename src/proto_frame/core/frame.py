@@ -42,15 +42,3 @@ class BaseFrame(abc.ABC):
         if prefix:
             return f"0b{format(int.from_bytes(frame_bytes, byteorder='big'), f'0{len(frame_bytes)*8}b')}"
         return format(int.from_bytes(frame_bytes, byteorder="big"), f"0{len(frame_bytes)*8}b")
-
-
-class Frame(BaseFrame):
-    def __init__(self, payload: bytes):
-        self.payload = payload
-
-    @classmethod
-    def from_bytes(cls, frame_bytes: bytes):
-        return cls(frame_bytes)
-
-    def to_bytes(self) -> bytes:
-        return self.payload
