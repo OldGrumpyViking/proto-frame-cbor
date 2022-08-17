@@ -67,7 +67,7 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/proto_frame.cbor"]
+packages = ["src/proto_frame"]
 
 [tool.hatch.version]
 source = "vcs"
@@ -101,6 +101,8 @@ exclude_lines = [
 ]
 
 [tool.mypy]
+mypy_path = "src"
+namespace_packages = true
 python_version = 3.8
 pretty = true
 warn_unused_configs = true
@@ -113,7 +115,6 @@ follow_imports = "normal"  # 'silent' for less strict mode (Individual modules c
 [tool.isort]
 py_version = "38"
 profile = "black"
-multi_line_output = 5
 include_trailing_comma = true
 use_parentheses = true
 src_paths = ["src", "tests"]
@@ -166,7 +167,7 @@ lint = [
   "isort . --diff --check",
   "pydocstringformatter . --exit-code",
   "black . --diff --check --color",
-  "mypy . --install-types --non-interactive",
+  "mypy -p proto_frame --install-types --non-interactive",
   "bandit -r . -c pyproject.toml",
   "pylint src"
 ]
@@ -206,6 +207,7 @@ update = "pip uninstall -r pip.lock -y && pip install -e . && pip check && pip f
 
 ## Minimal CI specific environments
 [tool.hatch.envs.test]
+dev-mode = false
 features = [
   "test",
 ]
