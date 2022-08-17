@@ -1,4 +1,4 @@
-# proto-frame
+# proto-frame-cbor
 
 **CI/CD**:
 [![CI - Test](https://github.com/OldGrumpyViking/proto-frame/actions/workflows/test.yml/badge.svg)](https://github.com/OldGrumpyViking/proto-frame/actions/workflows/test.yml)
@@ -24,7 +24,7 @@
 
 <!-- start overview include -->
 
-A Protocol Frame parser framework.
+CBOR protocol frames for the proto-frame framework.
 
 <!-- end overview include -->
 
@@ -42,7 +42,7 @@ This package only uses tools backed by [PyPa](https://www.pypa.io/en/latest/) an
 The package can be installed with:
 
 ```console
-$ pip install proto-frame
+$ pip install proto-frame-cbor
 ```
 
 ## Develop - Pip

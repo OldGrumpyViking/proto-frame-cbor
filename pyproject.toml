@@ -1,12 +1,13 @@
 [project]
-name = "proto-frame"
-description = 'Protocol Frame parser framework.'
+name = "proto-frame-cbor"
+description = 'CBOR protocol frames for the proto-frame framework.'
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.8"
 keywords = [
   "protocol",
   "frame",
+  "cbor",
 ]
 authors = [
   { name = "OldGrumpyViking", email = "old.grumpy.viking@hotmail.com" },
@@ -22,6 +23,7 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
+  "proto-frame"
 ]
 
 [project.optional-dependencies]
@@ -53,22 +55,25 @@ doc = [
   "sphinx_design ~= 0.2.0",
 ]
 dev = [  # All development features
-  "proto-frame[test,lint,doc]",
+  "proto-frame-cbor[test,lint,doc]",
 ]
 
 [project.urls]
-Issues = "https://github.com/OldGrumpyViking/proto-frame/issues"
-Source = "https://github.com/OldGrumpyViking/proto-frame"
+Issues = "https://github.com/OldGrumpyViking/proto-frame-cbor/issues"
+Source = "https://github.com/OldGrumpyViking/proto-frame-cbor"
 
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/proto_frame.cbor"]
+
 [tool.hatch.version]
 source = "vcs"
 
 [tool.hatch.build.hooks.vcs]
-version-file = "src/proto_frame/core/_version.py"
+version-file = "src/proto_frame/cbor/_version.py"
 
 [tool.pytest.ini_options]
 addopts = ["--cov",
@@ -174,10 +179,10 @@ doc-live = "sphinx-autobuild -a docs docs/_build/html --watch ."
 # [tool.hatch.envs.cnda]  # Used to run commnads using conda as the venv backend.
 # type = "conda"  # Needs the "hatch-conda" plugin
 
-# [tool.hatch.envs.codev]
-# pre-install-commands = [  # Changes to this line requires re-creation of the environment "hatch env remove codev".
-#   "pip install -e ../<dir-with-other-project>"  # Used for developing on two projects in editable mode simultaniously
-# ]
+[tool.hatch.envs.codev]
+pre-install-commands = [  # Changes to this line requires re-creation of the environment "hatch env remove codev".
+  "pip install -e ../proto-frame"  # Used for developing on two projects in editable mode simultaniously
+]
 
 [tool.hatch.envs.mrun]  # Used to run a command in multiple python environments
 # type = "container"  # Needs the "hatch-containers" plugin
