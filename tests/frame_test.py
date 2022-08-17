@@ -1,4 +1,4 @@
-from proto_frame import frame
+from proto_frame.core import frame
 
 
 class TestFrame:

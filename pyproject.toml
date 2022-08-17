@@ -68,7 +68,7 @@ build-backend = "hatchling.build"
 source = "vcs"
 
 [tool.hatch.build.hooks.vcs]
-version-file = "src/proto_frame/_version.py"
+version-file = "src/proto_frame/core/_version.py"
 
 [tool.pytest.ini_options]
 addopts = ["--cov",

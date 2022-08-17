@@ -24,7 +24,7 @@
 
 <!-- start overview include -->
 
-Protocol Frame parser framework.
+A Protocol Frame parser framework.
 
 <!-- end overview include -->
 
